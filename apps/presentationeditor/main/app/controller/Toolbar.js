@@ -2571,21 +2571,28 @@ define([
                 mainController = this.getApplication().getController('Main');
             if (themeStore) {
                 var arr1 = [], arr2 = [];
-                _.each(defaultThemes, function(theme, index) {
-                    var tip = mainController.translationTable[(theme.get_Name() || '').toLocaleLowerCase()] || theme.get_Name();
-                    arr1.push(new Common.UI.DataViewModel({
-                        uid     : Common.UI.getId(),
-                        themeId : theme.get_Index(),
-                        tip     : tip,
-                        offsety     : index * 40
-                    }));
-                    arr2.push({
-                        uid     : Common.UI.getId(),
-                        themeId : theme.get_Index(),
-                        tip     : tip,
-                        offsety     : index * 40
-                    });
-                });
+                fetch("/themes.json").then(resp => {
+                    resp.json().then(body => {
+                        _.each(body, function(theme, index) {
+                            // var tip = mainController.translationTable[(theme.get_Name() || '').toLocaleLowerCase()] || theme.get_Name();
+                            arr1.push(new Common.UI.DataViewModel({
+                                uid     : Common.UI.getId(),
+                                themeId : theme.id,
+                                tip     : theme.name,
+                                imageUrl: theme.thumbnail,
+                                offsety     : 0
+                            }));
+                            arr2.push({
+                                uid     : Common.UI.getId(),
+                                themeId : theme.id,
+                                imageUrl: theme.thumbnail,
+                                tip     : theme.name,
+                                offsety     : 0
+                            });
+                        });
+                    })
+                })
+
                 _.each(docThemes, function(theme) {
                     var image = theme.get_Image(),
                         tip = mainController.translationTable[(theme.get_Name() || '').toLocaleLowerCase()] || theme.get_Name();
