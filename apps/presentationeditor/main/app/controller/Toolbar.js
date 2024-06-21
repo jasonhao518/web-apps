@@ -2590,29 +2590,31 @@ define([
                                 offsety     : 0
                             });
                         });
+
+                        _.each(docThemes, function(theme) {
+                            var image = theme.get_Image(),
+                                tip = mainController.translationTable[(theme.get_Name() || '').toLocaleLowerCase()] || theme.get_Name();
+                            arr1.push(new Common.UI.DataViewModel({
+                                imageUrl: image,
+                                uid     : Common.UI.getId(),
+                                themeId : theme.get_Index(),
+                                tip     : tip,
+                                offsety     : 0
+                            }));
+                            arr2.push({
+                                imageUrl: image,
+                                uid     : Common.UI.getId(),
+                                themeId : theme.get_Index(),
+                                tip     : tip,
+                                offsety     : 0
+                            });
+                        });
+                        themeStore.reset(arr1);
+                        me.toolbar.listTheme.menuPicker.store.reset(arr2);
                     })
                 })
 
-                _.each(docThemes, function(theme) {
-                    var image = theme.get_Image(),
-                        tip = mainController.translationTable[(theme.get_Name() || '').toLocaleLowerCase()] || theme.get_Name();
-                    arr1.push(new Common.UI.DataViewModel({
-                        imageUrl: image,
-                        uid     : Common.UI.getId(),
-                        themeId : theme.get_Index(),
-                        tip     : tip,
-                        offsety     : 0
-                    }));
-                    arr2.push({
-                        imageUrl: image,
-                        uid     : Common.UI.getId(),
-                        themeId : theme.get_Index(),
-                        tip     : tip,
-                        offsety     : 0
-                    });
-                });
-                themeStore.reset(arr1);
-                me.toolbar.listTheme.menuPicker.store.reset(arr2);
+
             }
 
             if (me.toolbar.listTheme.menuPicker.store.length > 0 &&  me.toolbar.listTheme.rendered){
